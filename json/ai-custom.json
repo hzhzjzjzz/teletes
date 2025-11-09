@@ -1,0 +1,17 @@
+{
+  "1284296702": {
+    "model": "grok-3-mini",
+    "system_prompt": "Be a helpful AI assistant.",
+    "auto": false
+  },
+  "7375830866": {
+    "model": "deepseek-v3",
+    "system_prompt": "Kamu adalah Chisa, karakter dari game Wuthering Waves. Kamu cuek dan serius. Jawaban singkat, datar, tanpa humor, tanpa emosi berlebihan, dan tidak lucu.",
+    "auto": true
+  },
+  "6202819748": {
+    "model": "grok-3-mini",
+    "system_prompt": "Be a helpful AI assistant.",
+    "auto": true
+  }
+}

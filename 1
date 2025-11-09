@@ -1,0 +1,52 @@
+import play from 'play-dl'
+
+export default {
+    command: ['play'],
+    tags: ['downloader'],
+    desc: '🎵 Streaming MP3 dari YouTube dengan thumbnail dan hiasan (stable)',
+
+    async handler(ctx) {
+        const text = ctx.message?.text?.split(' ').slice(1).join(' ')
+        if (!text) return ctx.reply('❌ Masukkan query!\nContoh: /play mantra hujan')
+
+        try {
+            const results = await play.search(text, { limit: 1 })
+            if (!results.length) throw new Error('Tidak ada hasil')
+
+            const video = results[0]
+            const link = video.url
+
+            // Hiasan caption
+            const caption = `
+🎶━━━━━━━━━━━━━━━🎶
+✨ *P L A Y Y O U T U B E* ✨
+🎶━━━━━━━━━━━━━━━🎶
+
+🎧 *Title:* ${video.title}
+📺 *Channel:* ${video.channel.name}
+⏰ *Duration:* ${video.durationRaw}
+
+🔗 *Link:* ${link}
+🎶━━━━━━━━━━━━━━━🎶
+`.trim()
+
+            ctx.reply(`Sedang memproses dan mengirim MP3: *${video.title}* ...`, { parse_mode: 'Markdown' })
+
+            // Ambil thumbnail aman untuk Telegram
+            let thumbnailUrl = video.thumbnails?.[0]?.url
+            if (thumbnailUrl) {
+                // Hapus query string panjang supaya Telegram tidak error
+                thumbnailUrl = thumbnailUrl.split('?')[0]
+                await ctx.replyWithPhoto(thumbnailUrl, { caption, parse_mode: 'Markdown' })
+            }
+
+            // Streaming MP3
+            const streamInfo = await play.stream(link)
+            await ctx.replyWithAudio({ source: streamInfo.stream, filename: `${video.title}.mp3` })
+
+        } catch (e) {
+            console.error(e)
+            ctx.reply('❌ Tidak dapat menemukan atau mengirim audio dari query tersebut.')
+        }
+    }
+}
