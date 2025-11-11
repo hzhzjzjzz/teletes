@@ -27,7 +27,7 @@ export const config = {
 
     BOTNAME: "BOT ORDER AKRAB",
 
-    TOKEN: "7897542293:AAF45e5svQtUEvcdbOM_ynz0P0brglmC9nE",
+    TOKEN: "",
 USE_AUTO_AI: true,
 BOTUSERNAME: "BOT ORDER AKRAB",
 };
